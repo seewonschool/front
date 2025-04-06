@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <title>학생 정보 입력</title>
 </head>
+
 <body>
   <h1>학생 정보 입력</h1>
   <form id="studentForm">
     <input type="text" id="name" placeholder="이름" required><br>
     <input type="text" id="studentId" placeholder="학번" required><br>
-    <input type="text" id="major" placeholder="학과" required><br>
+    <select id="major" required>
+      <option value="">학과 선택</option>
+      <option value="전자공학">전자공학</option>
+      <option value="화공생명공학">화공생명공학</option>
+      <option value="기계공학">기계공학</option>
+      <option value="시스템반도체공학">시스템반도체공학</option>
+      <option value="컴퓨터공학">컴퓨터공학</option>
+      <option value="인공지능학">인공지능학</option>
+      <option value="AI기반 자유전공학부">AI기반 자유전공학부</option>
+    </select><br>
     <input type="email" id="email" placeholder="이메일" required><br>
     <button type="submit">제출</button>
   </form>
@@ -31,12 +42,13 @@
       const email = document.getElementById("email").value;
 
       console.log({ name, studentId, major, email });
-      
+      const fullMajor = `서강대학교공지알리미|${major}`;
+
       try {
         await addDoc(collection(db, "students"), {
           name,
           studentId,
-          major,
+          fullMajor,
           email
         });
         alert("제출되었습니다!");
@@ -48,4 +60,5 @@
     });
   </script>
 </body>
+
 </html>
