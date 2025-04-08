@@ -2,29 +2,43 @@
 <html lang="ko">
 
 <head>
+  <!-- Noto Sans KR 예시 -->
   <meta charset="UTF-8">
-  <title>학생 정보 입력</title>
+  <title>서강 공지 알리미</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1>학생 정보 입력</h1>
-  <form id="studentForm">
-    <input type="text" id="name" placeholder="이름" required><br>
-    <input type="text" id="studentId" placeholder="학번" required><br>
+  <!-- SOGANG 이미지 -->
+  <img src="image/sogangtitle.png" alt="서강타이틀이미지" class="top-image">
 
-    <select id="college" required>
-      <option value="">학부 선택</option>
-      <option value="소프트웨어융합대학">소프트웨어융합대학</option>
-      <option value="공과대학">공과대학</option>
-    </select>
+  <!-- 제목 -->
+  <div class="section-divider">
+    <span>서강공대알리미</span>
+  </div>
 
-    <select id="major" required>
-      <option value="">학과 선택</option>
-    </select>
+  <!-- Form -->
+  <div class="container">
+    <!-- 서강 로고 이미지 -->
+    <img src="image/soganglogo.png" alt="서강로고이미지" class="form-background">
+    <form id="studentForm">
+      <input type="text" id="name" placeholder="이름" required>
+      <input type="text" id="studentId" placeholder="학번" required>
 
-    <input type="email" id="email" placeholder="이메일" required><br>
-    <button type="submit">제출</button>
-  </form>
+      <select id="college" required>
+        <option value="">학부 선택</option>
+        <option value="소프트웨어융합대학">소프트웨어융합대학</option>
+        <option value="공과대학">공과대학</option>
+      </select>
+
+      <select id="major" required>
+        <option value="">학과 선택</option>
+      </select>
+
+      <input type="email" id="email" placeholder="이메일" required>
+      <button type="submit">제출</button>
+    </form>
+  </div>
 
   <script type="module">
 
