@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>서강 공지 알리미</title>
+  <!-- 캐쉬삭제되지 않는 이슈 해결 -->
+  <link rel="stylesheet" href="style.css?v=20250602">
+</head>
+
+<body>
+  <main>
+    <!-- SOGANG 이미지 -->
+    <img src="./image/sogangtitle.png" alt="서강타이틀이미지" class="top-image">
+
+    <!-- 제목 -->
+    <div class="section-divider">
+      <span>서강공대알리미</span>
+    </div>
+
+    <!-- Form -->
+    <div class="container">
+      <!-- 서강 로고 이미지 -->
+      <img src="./image/soganglogo.png" alt="서강로고이미지" class="form-background">
+      <form id="studentForm">
+        <input type="text" id="name" placeholder="이름" required>
+        <input type="text" id="studentId" placeholder="학번" required>
+
+        <select id="college" required>
+          <option value="colleage">학부 선택</option>
+          <option value="소프트웨어융합대학">소프트웨어융합대학</option>
+          <option value="공과대학">공과대학</option>
+        </select>
+
+        <select id="major" required>
+          <option value="major">학과 선택</option>
+        </select>
+        <input type="email" id="email" placeholder="이메일" required>
+        <button type="submit">제출</button>
+      </form>
+    </div>
+  </main>
+
+  <script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { firebaseConfig } from "./firebase-config.js";
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const majorOptions = {
+      "소프트웨어융합대학": ["컴퓨터공학", "인공지능학", "AI기반 자유전공학부"],
+      "공과대학": ["전자공학", "화공생명공학", "기계공학", "시스템반도체공학"]
+    };
+
+    const collegeSelect = document.getElementById("college");
+    const majorSelect = document.getElementById("major");
+
+    collegeSelect.addEventListener("change", () => {
+      const selectedCollege = collegeSelect.value;
+      majorSelect.innerHTML = '<option value="">학과 선택</option>';
+
+      if (majorOptions[selectedCollege]) {
+        majorOptions[selectedCollege].forEach((major) => {
+          const option = document.createElement("option");
+          option.value = major;
+          option.textContent = major;
+          majorSelect.appendChild(option);
+        });
+      }
+    });
+
+    document.getElementById("studentForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const studentId = document.getElementById("studentId").value.trim();
+      const college = collegeSelect.value;
+      const major = majorSelect.value;
+      const email = document.getElementById("email").value.trim();
+
+      const fullMajor = `서강대학교공지알리미|${college}|${major}`;
+
+      try {
+        await addDoc(collection(db, "students"), {
+          name,
+          studentId,
+          college,
+          major: fullMajor,
+          email
+        });
+        alert("제출되었습니다!\n관리자 승인이 필요해요, 조금만 기다려주세요!");
+        e.target.reset();
+      } catch (error) {
+        console.error("🔥 저장 실패:", error);
+        alert("저장 중 오류가 발생했습니다.");
+      }
+    });
+  </script>
+</body>
