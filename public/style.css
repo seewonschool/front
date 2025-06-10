@@ -46,7 +46,7 @@ main {
   width: 100%;
   max-width: 420px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
+  overflow: visible;
   margin-bottom: 24px;
 }
 

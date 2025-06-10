@@ -28,13 +28,16 @@
         <input type="text" id="studentId" placeholder="학번" required>
 
         <select id="college" required>
-          <option value="colleage">학부 선택</option>
+          <option value="">학부 선택</option>
           <option value="소프트웨어융합대학">소프트웨어융합대학</option>
           <option value="공과대학">공과대학</option>
+          <option value="인문대학">인문대학</option>
+          <option value="지식융합미디어대학">지식융합미디어대학</option>
+          <option value="자연과학대학">자연과학대학</option>
         </select>
 
         <select id="major" required>
-          <option value="major">학과 선택</option>
+          <option value="">학과 선택</option>
         </select>
         <input type="email" id="email" placeholder="이메일" required>
         <button type="submit">제출</button>
@@ -46,20 +49,26 @@
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { firebaseConfig } from "./firebase-config.js";
+    import { firebaseConfig } from "/firebase-config.js";
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+
     const majorOptions = {
-      "소프트웨어융합대학": ["컴퓨터공학", "인공지능학", "AI기반 자유전공학부"],
-      "공과대학": ["전자공학", "화공생명공학", "기계공학", "시스템반도체공학"]
+      "소프트웨어융합대학": ["컴퓨터공학과", "인공지능학과", "AI기반 자유전공학부"],
+      "공과대학": ["전자공학과", "화공생명공학과", "기계공학과", "시스템반도체공학과"],
+      "인문대학": ["국어국문학과", "영문학부"],
+      "지식융합미디어대학": ["미디어&엔터인먼트학과"],
+      "자연과학대학": ["수학과"]
     };
 
     const collegeSelect = document.getElementById("college");
     const majorSelect = document.getElementById("major");
 
     collegeSelect.addEventListener("change", () => {
-      const selectedCollege = collegeSelect.value;
+      const selectedCollege = collegeSelect.value.trim();
+      console.log("선택된 학부:", selectedCollege); 
+
       majorSelect.innerHTML = '<option value="">학과 선택</option>';
 
       if (majorOptions[selectedCollege]) {
@@ -69,6 +78,8 @@
           option.textContent = major;
           majorSelect.appendChild(option);
         });
+      } else {
+        console.warn("해당 학부에 학과 목록 없음:", selectedCollege);
       }
     });
 
@@ -77,8 +88,8 @@
 
       const name = document.getElementById("name").value.trim();
       const studentId = document.getElementById("studentId").value.trim();
-      const college = collegeSelect.value;
-      const major = majorSelect.value;
+      const college = collegeSelect.value.trim();
+      const major = majorSelect.value.trim();
       const email = document.getElementById("email").value.trim();
 
       const fullMajor = `서강대학교공지알리미|${college}|${major}`;
